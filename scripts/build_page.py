@@ -105,8 +105,8 @@ def fig_adoption():
         f'<div class="rg-lo{" fc" if f else ""}" style="width:{v}%; border-radius:3px"></div><span>{v}%</span></div></div>'
         for y, v, f in ADOPTION) + "</div>"
     return figure("Доля компаний ТЭК, которые применяют ИИ", html,
-                  f'Минэнерго России, по данным «{link("Коммерсанта", KOMMERSANT)}» (30.10.2025) и '
-                  f'{link("РИА Новости", "https://ria.ru/20250422/predprijatija-2012798075.html")} (22.04.2025).')
+                  f'Минэнерго России в изложении «{link("Коммерсанта", KOMMERSANT)}» (30.10.2025) и '
+                  f'{link("РИА Новости", "https://ria.ru/20250422/predprijatija-2012798075.html")} (22.04.2025); методика не раскрыта.')
 
 
 def fig_scenarios():
@@ -127,7 +127,8 @@ def fig_scenarios():
              "пилоты"),
             ("<strong>Контакт-центр энергосбыта</strong>",
              "Голосовой ассистент принимает показания, консультирует по тарифам и платежам",
-             "Голосовые роботы в контакт-центрах уже работают — это самый зрелый сценарий и опора для остальных",
+             "Голосовые роботы в контакт-центрах уже работают. «Наносемантика» внедрила диалоговые системы в энергосбытовых "
+             "компаниях; в одной из них экономия на контакт-центре — около 40 млн ₽ в год, по данным компании",
              "работает")]
     return figure("Четыре сценария пятого поколения и что их подтверждает уже сегодня",
                   table(["Сценарий", "Что делает", "Подтверждения", "Зрелость"], rows))
@@ -163,6 +164,56 @@ def fig_barriers():
     return figure("Семь барьеров и практический вывод по каждому", table(["Барьер", "В чём сложность", "Вывод"], rows))
 
 
+DIRECTIONS = [("Росатом: персонал и цифровизация", 15), ("Кадровый дефицит в энергетике", 10),
+              ("«Россети»: цифровая трансформация", 7), ("Речевые технологии", 6),
+              ("Цифровые двойники и ИИ в энергетике", 5), ("Мультиагентные системы", 3),
+              ("Industry 5.0 и обзоры цифровизации", 3), ("Мировой контекст: энергетика и ИИ", 1)]
+
+
+def fig_funnel():
+    total = sum(n for _, n in DIRECTIONS)
+    steps = [(f"≈ {total}", "материалов просмотрено", f"{len(DIRECTIONS)} направлений"),
+             ("12", "ключевых источников", "в списке источников записки"),
+             ("6", "частей записки", "от истории до барьеров и сильных сторон России"),
+             ("20 минут", "доклад", "7 смысловых блоков"),
+             ("58 → 25", "утверждений сверено → источников в кейсе", "проверка перед публикацией кейса")]
+    fn = '<div class="kpis">' + "".join(f'<div class="kpi"><div class="kpi-v">{v}</div><div class="kpi-l">{esc(l)}'
+                                        f'<br><span class="muted">{esc(d)}</span></div></div>' for v, l, d in steps) + "</div>"
+    mx = max(n for _, n in DIRECTIONS)
+    bars = '<div class="ranges">' + "".join(
+        f'<div class="rg"><div class="rg-l">{esc(d)}</div><div class="rg-bar"><div class="rg-lo" style="width:{n / mx * 60:.0f}%; '
+        f'border-radius:3px"></div><span>{n}</span></div></div>' for d, n in DIRECTIONS) + "</div>"
+    return figure("От материала к докладу: сколько отобрано на каждом шаге", fn + bars,
+                  "Направления и число материалов — по рабочему списку источников, собранному при подготовке записки.")
+
+
+def fig_rejected():
+    rows = [("Формула Меграбяна «7–38–55» как закон общения", "Два эксперимента 1967 года на нескольких десятках студентов; "
+             "сам автор ограничивал её сообщениями о чувствах", "«Общение мультимодально» — без процентов"),
+            ("Огульный тезис о «последней миле»", "Неверен для подготовленного персонала и оскорбителен для зала",
+             "Только подтверждённые случаи: Три-Майл-Айленд, лавина сигналов, новые задачи"),
+            ("«SCADA устарела»", "Противоречит практике и обесценивает работу отрасли", "Новое поколение — дополнение, а не замена"),
+            ("Цифры точности и эффекта от поставщиков без методики", "Это маркетинг, а не измерение",
+             "Брать с пометкой «по данным поставщика» или не брать"),
+            ("Прогнозы консалтинга в пересказе", "Пересказ часто искажает формулировку и год",
+             "Только то, что прослеживается до пресс-релиза или отчёта"),
+            ("Суммы и показатели из блогов и агрегаторов", "Нет документа, на который можно сослаться",
+             "Цифры из указов, стратегий и сообщений ведомств"),
+            ("Старые цифры, поданные как текущие", "Цифра 2012 года не описывает 2026-й", "Год при каждой цифре")]
+    return figure("Что не прошло отбор и почему", table(["Звучит убедительно", "Почему не годится", "Что вместо"], rows))
+
+
+def fig_markers():
+    rows = [("Доля компаний ТЭК, применяющих ИИ, достигает 70%", "2027", "Прогноз Минэнерго — проверяется сам собой"),
+            ("Диалоговый ассистент переходит из опытной в промышленную эксплуатацию на значимом объекте КИИ", "2027–2028",
+             "Сообщения Росатома, Системного оператора, генерирующих компаний"),
+            ("В приказах ФСТЭК или отраслевых стандартах появляются требования именно к голосовому и диалоговому интерфейсу",
+             "до 2028", "Нормативные документы ФСТЭК и Минэнерго"),
+            ("Появляется отраслевая методика оценки эффекта ИИ-интерфейсов", "до 2028", "Минэнерго, отраслевые ассоциации"),
+            ("Мультимодальный интерфейс — отдельная позиция в закупках энергокомпаний", "до 2028", "Закупки по 223-ФЗ")]
+    return figure("Маркеры: по чему будет видно, что прогноз сбывается", table(["Маркер", "Когда", "Где проверить"], rows))
+
+
 TALK = [("0–2", "Вступление", "Диспетчер 1921 года с телефоном и диспетчер 2026 года с видеостеной. Что будет через 10 лет?"),
         ("2–6", "История", "Пять поколений: каждое расширяло возможности человека, а не заменяло его"),
         ("6–9", "«Последняя миля» — честно", "Не «SCADA устарела», а «появились новые задачи»"),
@@ -176,7 +227,7 @@ def fig_talk():
     html = '<ol class="talk">' + "".join(
         f'<li><span class="tk-m">{m} мин</span><span class="tk-h">{esc(h)}</span><span class="tk-t">{esc(t)}</span></li>'
         for m, h, t in TALK) + "</ol>"
-    return figure("Структура доклада: 20 минут", html)
+    return figure("Структура доклада: 20 минут — доверие раньше прогноза", html)
 
 
 REFS = [
@@ -225,8 +276,9 @@ def author_block():
             '<a href="https://t.me/maxim_potsipukh" target="_blank" rel="noopener">Telegram</a> · '
             '<a href="https://max.ru/u/f9LHodD0cOI-rqGbPaCc2EshAXaEgw4ABwO8e2-ng4zK-otGeBnO04IzH5g" target="_blank" rel="noopener">Max</a></span></span></div>')
 
-FIGS = {"photo": fig_photo, "generations": fig_generations, "tasks": fig_tasks, "channels": fig_channels,
-        "adoption": fig_adoption, "scenarios": fig_scenarios, "barriers": fig_barriers, "talk": fig_talk, "refs": fig_refs}
+FIGS = {"photo": fig_photo, "talk": fig_talk, "funnel": fig_funnel, "rejected": fig_rejected, "generations": fig_generations,
+        "tasks": fig_tasks, "channels": fig_channels, "adoption": fig_adoption, "scenarios": fig_scenarios,
+        "barriers": fig_barriers, "markers": fig_markers, "refs": fig_refs}
 
 CSS = """
 :root{
@@ -329,7 +381,8 @@ th{font-weight:600; color:var(--ink-2); font-size:12.5px;}
 .gen.next{background:var(--accent-soft); border-color:var(--accent);} .gen.next .gen-h{color:var(--accent);}
 .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;} .cards5{grid-template-columns:repeat(5,1fr);}
 .card{border:1px solid var(--rule); border-radius:6px; padding:10px 12px; font-size:13px; line-height:1.45;} .card p{margin:0;}
-.rg-lo.fc{opacity:.45;}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(125px,1fr));} .kpi-v{font-size:1.25rem;}
+.rg-lo.fc{opacity:.45;} .muted{color:var(--muted); font-size:12px;}
 .talk{list-style:none; margin:0; padding:0; display:grid; gap:6px;}
 .talk li{display:grid; grid-template-columns:5.5em 11em 1fr; gap:12px; font-size:13.5px; padding:6px 0; border-bottom:1px solid var(--rule);}
 .tk-m{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12px; color:var(--accent);} .tk-h{font-weight:620;}
