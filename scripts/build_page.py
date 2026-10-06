@@ -49,175 +49,83 @@ def link(text, url):
 def fig_photo():
     return ('<figure class="chart photo"><img src="assets/img/stage.jpg" alt="Максим Поципух выступает с докладом '
             '«Интерфейс энергетики будущего» на РМЭФ-2026" loading="lazy" width="1050" height="1400">'
-            '<p class="note">Доклад на конференции «Взгляд в будущее: инновационные технологии и стартапы в энергетике», '
+            '<p class="note">Конференция «Взгляд в будущее: инновационные технологии и стартапы в энергетике», '
             f'РМЭФ-2026, Санкт-Петербург, 23 апреля 2026 года. {link("Новость о выступлении", NEWS)}.</p></figure>')
 
 
-GENERATIONS = [
-    ("0", "до конца 1920-х", "Присутствие", "Человек у установки: стрелочные приборы, бумажный журнал, доклад голосом или телеграфом"),
-    ("1", "1920-е — 1950-е", "Пространство", "Телефон, частотомер и первый диспетчерский щит из фанеры с мнемосхемой: система видна целиком"),
-    ("2", "1960-е — 1980-е", "Время", "Мозаичные щиты, ОАСУ «Энергия» (1971), первые АСУ ТП: архив и динамика вместо моментального снимка"),
-    ("3", "1990-е — 2010-е", "Гибкость", "Экранный интерфейс и SCADA, видеостены: картину можно перестроить под задачу за секунды"),
-    ("4", "2010-е — сейчас", "Интеллект", "Предиктивная аналитика, цифровые двойники: система находит аномалии и подсказывает действия"),
-    ("5", "горизонт 5–10 лет", "Диалог", "С системой разговаривают голосом и показывают ей оборудование — слой поверх всех предыдущих"),
-]
+def slide(n, alt, note=""):
+    def f():
+        nt = f'<p class="note">{note}</p>' if note else ""
+        return (f'<figure class="chart slide"><img src="assets/img/slide-{n}.jpg" alt="Слайд доклада: {esc(alt)}" '
+                f'loading="lazy" width="1400" height="787">{nt}</figure>')
+    return f
 
 
-def fig_generations():
-    html = '<div class="gens">' + "".join(
-        f'<div class="gen{" next" if n == "5" else ""}"><div class="gen-n">{n}</div><div class="gen-y">{esc(y)}</div>'
-        f'<div class="gen-h">{esc(h)}</div><p>{esc(t)}</p></div>' for n, y, h, t in GENERATIONS) + "</div>"
-    return figure("Пять поколений интерфейса энергосистемы и шестое на горизонте: что добавило каждое", html,
-                  "По материалам АО «СО ЕЭС» об истории диспетчерского управления; поколение 5 — прогноз доклада.")
+def fig_human():
+    return ('<figure class="chart"><div class="callout"><p>Мы общаемся через <strong>речь, интонацию, мимику, жесты, '
+            'контекст и паузы</strong>. Это и есть наш «родной интерфейс».</p>'
+            '<p>По оценке Рэя Бёрдвистелла, невербальные каналы несут <strong>65–70% информации</strong> в живом общении. '
+            'Это оценка, а не измерение, но вывод от процентов не зависит: человеческое общение мультимодально по своей природе.</p>'
+            '</div></figure>')
 
 
-def cards(items, cls="cards"):
-    return f'<div class="{cls}">' + "".join(
-        f'<div class="card"><div class="flow-h">{esc(h)}</div><p>{esc(t)}</p></div>' for h, t in items) + "</div>"
+def fig_value():
+    return ('<figure class="chart"><div class="callout"><p><strong>Ключевой аргумент:</strong> чем больше объём автоматизации, '
+            'тем выше концентрация ответственности у оставшихся людей — и тем критичнее качество их взаимодействия с системой.'
+            '</p></div></figure>')
 
 
-def fig_tasks():
-    return figure("Три задачи, под которые SCADA не проектировалась", cards([
-        ("Кадровый разрыв", "Опытных диспетчеров всё меньше, подготовка нового занимает годы. SCADA показывает процесс, но не учит."),
-        ("Работа в поле", "На подстанции, на высоте, в шумном цеху нет экрана и свободных рук — только бумажный чек-лист и рация."),
-        ("Смысловая связка систем", "API связывают платформы технически, но соединить сигнал аналитики со складом запчастей и графиком ремонтов "
-                                    "по-прежнему приходится человеку."),
-    ]))
+def fig_speech():
+    rows = [("Классическая цепочка: распознать → понять → сгенерировать → озвучить", "800–2000+ мс",
+             "Заметная, некомфортная пауза до первого звука ответа"),
+            ("Аудио-нативные модели", "40–250 мс",
+             "Ответ формируется по ходу фразы, намерение понимается по первым 300–500 мс речи"),
+            ("Комфортный порог паузы в естественном разговоре", "менее 500 мс",
+             "Средняя пауза между репликами у людей — около 200 мс")]
+    return figure("Задержка до первого звука ответа", table(["", "Задержка", "Что это значит"], rows, "num txtlast"),
+                  f'По слайду доклада; ориентиры — отраслевые обзоры голосовых моделей 2025–2026 годов '
+                  f'({link("Inworld, март 2026", "https://inworld.ai/resources/best-speech-to-speech-apis")}) и '
+                  f'{link("Stivers et al., PNAS, 2009", "https://www.pnas.org/doi/10.1073/pnas.0903616106")} о паузах между репликами.')
 
 
-def fig_channels():
-    return figure("Мультимодальный интерфейс на объекте энергетики: пять каналов", cards([
-        ("Голос", "Основной канал запроса: «Покажи состояние турбины № 4 за последние 6 часов»."),
-        ("Слух", "Ответ звучит в гарнитуре во время обхода, когда руки заняты, а глаза смотрят на оборудование."),
-        ("Зрение", "Камера смартфона или AR-очков узнаёт агрегат и накладывает историю и прогноз."),
-        ("Контекст", "Система знает роль спрашивающего и место, откуда задан вопрос."),
-        ("Диалог", "Не команды, а разговор: «А что там было в августе?» понимается в контексте прошлого вопроса."),
-    ], "cards cards5"))
-
-
-ADOPTION = [("2021", 29, False), ("2024", 58, False), ("2027", 70, True)]
-KOMMERSANT = "https://www.kommersant.ru/doc/8161430"
-
-
-def fig_adoption():
-    html = '<div class="ranges">' + "".join(
-        f'<div class="rg"><div class="rg-l">{y}{" — прогноз" if f else ""}</div><div class="rg-bar">'
-        f'<div class="rg-lo{" fc" if f else ""}" style="width:{v}%; border-radius:3px"></div><span>{v}%</span></div></div>'
-        for y, v, f in ADOPTION) + "</div>"
-    return figure("Доля компаний ТЭК, которые применяют ИИ", html,
-                  f'Минэнерго России в изложении «{link("Коммерсанта", KOMMERSANT)}» (30.10.2025) и '
-                  f'{link("РИА Новости", "https://ria.ru/20250422/predprijatija-2012798075.html")} (22.04.2025); методика не раскрыта.')
-
-
-def fig_scenarios():
-    rows = [("<strong>Диалоговая надстройка в диспетчерской</strong>",
-             "«Покажи объекты с аномалиями за сутки и отсортируй по приоритету» — поверх SCADA, аналитики и учёта",
-             "Siemens Industrial Copilot: больше 100 промышленных клиентов к октябрю 2024 года, голосовой режим в Simatic eaSie. "
-             "Росатом: система поддержки оператора на блоке № 6 Нововоронежской АЭС в опытной эксплуатации с июля 2025 года — 360 систем, прогноз на 30 минут",
-             "пилоты"),
-            ("<strong>Ассистент полевого инженера</strong>",
-             "Узнаёт оборудование через камеру, ведёт по шагам, принимает голосовой отчёт",
-             "СИБУР в 2021 году сообщал об AR-консультантах на предприятиях клиентов. Boeing — до 25% экономии времени "
-             "на сборке жгутов с AR, по данным поставщика решения",
-             "пилоты"),
-            ("<strong>Цифровой наставник</strong>",
-             "Обучение и аттестация нового персонала на оборудовании конкретной станции",
-             "«Газпром нефть шельф» — VR-тренажёр для обучения (2023); BIOCAD — AR-приложение для обучения работе "
-             "с лиофильной сушилкой",
-             "пилоты"),
-            ("<strong>Контакт-центр энергосбыта</strong>",
-             "Голосовой ассистент принимает показания, консультирует по тарифам и платежам",
-             "Голосовые роботы в контакт-центрах уже работают. «Наносемантика» внедрила диалоговые системы в энергосбытовых "
-             "компаниях; в одной из них экономия на контакт-центре — около 40 млн ₽ в год, по данным компании",
-             "работает")]
-    return figure("Четыре сценария пятого поколения и что их подтверждает уже сегодня",
-                  table(["Сценарий", "Что делает", "Подтверждения", "Зрелость"], rows))
-
-
-def fig_barriers():
-    rows = [("Кибербезопасность КИИ",
-             "187-ФЗ, приказы ФСТЭК № 31 и № 239, постановление № 127. В 2025 году — больше 400 дел о нарушении "
-             "категорирования. Голос можно подделать, команду — внедрить через запрос",
-             "Контур «информирование и рекомендации», а не «управление»; подтверждение оператором, журнал каждого запроса, "
-             "сегментация сетей, однонаправленные шлюзы"),
-            ("Галлюцинации моделей",
-             "В апреле 2025 года OpenAI сообщила, что o3 ошибается в 33% вопросов теста PersonQA — вдвое чаще o1. "
-             "Полностью устранить галлюцинации нельзя",
-             "Модель — интерпретатор доверенных данных (RAG), а не источник истины; ссылка на источник в каждом ответе"),
-            ("Отраслевые данные",
-             "Общие модели плохо знают терминологию, маркировки и аббревиатуры энергетики",
-             "Дообучение на данных заказчика, терминологические базы, проверка распознавания речи в шуме"),
-            ("Технологический суверенитет",
-             "Siemens и ABB ушли, Schneider Electric продала бизнес, GE свернула деятельность; на значимых объектах КИИ "
-             "иностранное ПО запрещено с 2025 года",
-             "Развёртывание в контуре заказчика — норма, а не опция"),
-            ("Кадры и культура",
-             "Для части персонала ИИ-ассистент непривычен; молодые сотрудники ждут голосовых помощников, как дома",
-             "Проект управления изменениями: пилотные группы с опытными диспетчерами, прозрачность, от информирования к рекомендациям"),
-            ("Регулирование",
-             "Отраслевых стандартов нет; приказ ФСТЭК № 117 с 1 марта 2026 года впервые задал требования к ИИ, но для "
-             "государственных систем; законопроект о сертификации ИИ высокого риска — в работе",
-             "Опережающее внедрение: первые получают опыт и влияют на стандарты"),
-            ("Экономика",
-             "Эффект комплексный: время операций, ошибки, скорость обучения. Методик оценки нет",
-             "Обоснование через стратегическую готовность отрасли, а не ROI одного проекта")]
-    return figure("Семь барьеров и практический вывод по каждому", table(["Барьер", "В чём сложность", "Вывод"], rows))
-
-
-
-TALK = [("0–2", "Вступление", "Диспетчер 1921 года с телефоном и диспетчер 2026 года с видеостеной. Что будет через 10 лет?"),
-        ("2–6", "История", "Пять поколений: каждое расширяло возможности человека, а не заменяло его"),
-        ("6–9", "«Последняя миля» — честно", "Не «SCADA устарела», а «появились новые задачи»"),
-        ("9–12", "Природа человека", "Интерфейс будущего не изобретается, а возвращается к естественной форме"),
-        ("12–16", "Образ будущего", "Пятое поколение и четыре сценария с подтверждениями сегодняшнего дня"),
-        ("16–19", "Барьеры", "Каждый — с практическим выводом"),
-        ("19–20", "Финал", "Почему у России есть основания и возврат к образу диспетчера")]
-
-
-def fig_talk():
-    html = '<ol class="talk">' + "".join(
-        f'<li><span class="tk-m">{m} мин</span><span class="tk-h">{esc(h)}</span><span class="tk-t">{esc(t)}</span></li>'
-        for m, h, t in TALK) + "</ol>"
-    return figure("Структура доклада: 20 минут", html)
+FIGS = {"photo": fig_photo,
+        "slide03": slide("03", "сто лет эволюции интерфейса"),
+        "slide04": slide("04", "поколения интерфейса 1–3"),
+        "slide05": slide("05", "четвёртое поколение — цифровая эра и переход к ИИ-слою"),
+        "human": fig_human,
+        "slide07": slide("07", "мультимодальный интерфейс на объекте энергетики"),
+        "value": fig_value,
+        "speech": fig_speech,
+        "slide11": slide("11", "контуры интерфейса пятого поколения"),
+        "slide12": slide("12", "вызовы и барьеры"),
+        "slide13": slide("13", "заключение"),
+        "refs": None}
 
 
 REFS = [
+    ("Минэнерго о доле компаний ТЭК, применяющих ИИ (РИА Новости, 22.04.2025)", "https://ria.ru/20250422/predprijatija-2012798075.html"),
+    ("«Коммерсантъ»: ИИ в энергетике, 30.10.2025", "https://www.kommersant.ru/doc/8161430"),
+    ("«Коммерсантъ»: в условиях дефицита кадров, 22.12.2025", "https://www.kommersant.ru/doc/8294072"),
+    ("«Страна Росатом»: к 2030 году в Росатоме будет 230 роботов на 10 тысяч сотрудников, 23.12.2025",
+     "https://strana-rosatom.ru/2025/12/23/k-2030-godu-v-rosatome-budet-230-robotov-na-10/"),
     ("АО «СО ЕЭС»: история оперативно-диспетчерского управления", "https://www.so-ups.ru/about/history/1921-2002/"),
     ("АО «СО ЕЭС»: как менялись диспетчерские щиты", "https://www.so-ups.ru/news/smi/press-view/news/1517/"),
-    ("НИИПТ: АСУ ТП Выборгской преобразовательной подстанции", "https://isup.ru/articles/2/424/"),
-    ("«Коммерсантъ»: ИИ в энергетике, данные Минэнерго", KOMMERSANT),
-    ("РИА Новости: Минэнерго о применении ИИ в ТЭК", "https://ria.ru/20250422/predprijatija-2012798075.html"),
-    ("Отчёт комиссии Кемени об аварии на Три-Майл-Айленд", "http://www.pddoc.com/tmi2/kemeny/wednesday_march_28_1979.htm"),
-    ("Alarm floods and plant incidents (ISA-18.2)", "https://www.digitalrefining.com/article/1000558/alarm-floods-and-plant-incidents"),
-    ("Microsoft и Siemens: Industrial Copilot", "https://news.microsoft.com/source/2024/10/24/siemens-and-microsoft-scale-industrial-ai/"),
-    ("Siemens: ИИ-агенты и голосовой режим", "https://press.siemens.com/global/en/pressrelease/siemens-introduces-ai-agents-industrial-automation"),
-    ("«Российская газета»: цифровой помощник оператора на Нововоронежской АЭС",
-     "https://rg.ru/2025/07/04/reg-cfo/na-novovoronezhskoj-aes-zarabotal-unikalnyj-cifrovoj-pomoshchnik-operatora.html"),
-    ("Kyutai Moshi: задержка голосовой модели", "https://arxiv.org/abs/2410.00037"),
-    ("Mistral: Voxtral", "https://mistral.ai/news/voxtral"),
-    ("OpenAI: gpt-realtime", "https://openai.com/index/introducing-gpt-realtime/"),
-    ("Deloitte TMT Predictions 2025: ИИ-агенты",
-     "https://www.deloitte.com/us/en/insights/industry/technology/technology-media-and-telecom-predictions/2025/autonomous-generative-ai-agents-still-under-development.html"),
-    ("TechCrunch: галлюцинации o3 и o4-mini", "https://techcrunch.com/2025/04/18/openais-new-reasoning-ai-models-hallucinate-more/"),
-    ("Xu и др. (2024): неизбежность галлюцинаций", "https://arxiv.org/abs/2401.11817"),
-    ("Меграбян о границах своей формулы", "https://www.kaaj.com/psych/smorder.html"),
-    ("ФСТЭК о проверках КИИ в 2025–2026 годах",
+    ("Рэй Бёрдвистелл и оценка доли невербальной информации", "https://en.wikipedia.org/wiki/Ray_Birdwhistell"),
+    ("Inworld: обзор голосовых моделей, март 2026", "https://inworld.ai/resources/best-speech-to-speech-apis"),
+    ("Stivers et al. (2009): паузы между репликами в разговоре", "https://www.pnas.org/doi/10.1073/pnas.0903616106"),
+    ("Kyutai Moshi: аудио-нативная голосовая модель", "https://arxiv.org/abs/2410.00037"),
+    ("ФСТЭК о проверках объектов КИИ в 2025–2026 годах",
      "https://cisoclub.ru/fstjek-priznala-ujazvimost-bolshinstva-obektov-kriticheskoj-infrastruktury-i-gotovitsja-uzhestochit-kontrol"),
-    ("Приказ ФСТЭК № 117: требования к ИИ", "https://www.anti-malware.ru/analytics/Technology_Analysis/FSTEC-Order-No-117"),
-    ("Указ № 166 об отечественном ПО на значимых объектах КИИ", "https://base.garant.ru/403784114/"),
-    ("Европейский AI Act: ИИ в энергетике — высокий риск",
-     "https://www.bakerbotts.com/thought-leadership/publications/2026/may/ai-regulatory-update-for-energy-new-timelines-in-the-eu-new-standards-in-the-us"),
-    ("«Коммерсантъ»: цель Национальной стратегии развития ИИ — 11,2 трлн рублей", "https://www.kommersant.ru/doc/7267191"),
-    ("СИБУР: AR-консультанты (CNews, 2020)", "https://www.cnews.ru/news/line/2020-07-10_sibur_zapustil_arservis"),
-    ("Boeing и Upskill: AR в сборке жгутов", "https://arinsider.co/2021/08/24/case-study-boeing-cuts-production-time-with-ar/"),
     ("«Наносемантика» на РМЭФ-2026", NEWS),
 ]
 
 
 def fig_refs():
     return ('<ol class="sources">' + "".join(f"<li>{link(esc(t), u)}</li>" for t, u in REFS) + "</ol>"
-            '<p class="note">Аналитическая записка к докладу не публикуется целиком; факты из неё сверены с источниками '
-            'выше, цифры приведены по первоисточникам.</p>')
+            '<p class="note">Слайды — из презентации доклада. Цифры, которых нет на слайдах, сверены с первоисточниками.</p>')
+
+
+FIGS["refs"] = fig_refs
 
 
 def author_block():
@@ -226,9 +134,6 @@ def author_block():
             '<span class="author-txt"><span>Максим Поципух</span><span class="author-links">'
             '<a href="https://t.me/maxim_potsipukh" target="_blank" rel="noopener">Telegram</a> · '
             '<a href="https://max.ru/u/f9LHodD0cOI-rqGbPaCc2EshAXaEgw4ABwO8e2-ng4zK-otGeBnO04IzH5g" target="_blank" rel="noopener">Max</a></span></span></div>')
-
-FIGS = {"photo": fig_photo, "generations": fig_generations, "tasks": fig_tasks, "channels": fig_channels,
-        "adoption": fig_adoption, "scenarios": fig_scenarios, "barriers": fig_barriers, "talk": fig_talk, "refs": fig_refs}
 
 CSS = """
 :root{
@@ -322,7 +227,9 @@ th{font-weight:600; color:var(--ink-2); font-size:12.5px;}
 .num td:not(:first-child),.num th:not(:first-child){text-align:right; font-variant-numeric:tabular-nums;}
 .txtlast td:last-child,.txtlast th:last-child{text-align:left;}
 @media (max-width:640px){ .cols3{grid-template-columns:1fr;} .rg{grid-template-columns:1fr; gap:4px;} }
-.photo img{display:block; width:100%; height:auto; border-radius:4px;}
+.photo img,.slide img{display:block; width:100%; height:auto; border-radius:4px;}
+.slide{padding:8px;}
+.callout{background:var(--accent-soft); border-radius:6px; padding:14px 16px; font-size:15px;} .callout p{margin:0 0 8px;} .callout p:last-child{margin:0;}
 .gens{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
 .gen{border:1px solid var(--rule); border-radius:6px; padding:10px 12px; font-size:13px; line-height:1.45;} .gen p{margin:4px 0 0;}
 .gen-n{font-size:1.5rem; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums;}

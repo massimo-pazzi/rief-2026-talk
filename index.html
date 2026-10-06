@@ -100,7 +100,9 @@ th{font-weight:600; color:var(--ink-2); font-size:12.5px;}
 .num td:not(:first-child),.num th:not(:first-child){text-align:right; font-variant-numeric:tabular-nums;}
 .txtlast td:last-child,.txtlast th:last-child{text-align:left;}
 @media (max-width:640px){ .cols3{grid-template-columns:1fr;} .rg{grid-template-columns:1fr; gap:4px;} }
-.photo img{display:block; width:100%; height:auto; border-radius:4px;}
+.photo img,.slide img{display:block; width:100%; height:auto; border-radius:4px;}
+.slide{padding:8px;}
+.callout{background:var(--accent-soft); border-radius:6px; padding:14px 16px; font-size:15px;} .callout p{margin:0 0 8px;} .callout p:last-child{margin:0;}
 .gens{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
 .gen{border:1px solid var(--rule); border-radius:6px; padding:10px 12px; font-size:13px; line-height:1.45;} .gen p{margin:4px 0 0;}
 .gen-n{font-size:1.5rem; font-weight:700; color:var(--accent); font-variant-numeric:tabular-nums;}
@@ -122,159 +124,120 @@ th{font-weight:600; color:var(--ink-2); font-size:12.5px;}
 <p class="eyebrow">Портфолио-кейс: стратегия и аналитика рынка · Максим Поципух · Апрель 2026</p>
 <h1>Интерфейс энергетики будущего: доклад на РМЭФ-2026</h1>
 <div class="author"><img src="data:image/jpeg;base64,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" alt="Максим Поципух" width="64" height="64"><span class="author-txt"><span>Максим Поципух</span><span class="author-links"><a href="https://t.me/maxim_potsipukh" target="_blank" rel="noopener">Telegram</a> · <a href="https://max.ru/u/f9LHodD0cOI-rqGbPaCc2EshAXaEgw4ABwO8e2-ng4zK-otGeBnO04IzH5g" target="_blank" rel="noopener">Max</a></span></span></div>
-<p><em>Аналитическая записка и доклад «Интерфейс энергетики будущего: как ИИ меняет
-способ взаимодействия человека с энергетической инфраструктурой». Российский
-международный энергетический форум, Санкт-Петербург, 23 апреля 2026 года.
-Автор — Максим Поципух, заместитель директора по развитию «Лаборатории
-Наносемантика». <a href="https://nanosemantics.ai/blog/807">Новость о выступлении</a> ·
+<p><em>Доклад «Интерфейс энергетики будущего: как искусственный интеллект меняет
+способ взаимодействия человека с энергетической инфраструктурой».
+Российский международный энергетический форум, Санкт-Петербург, 23 апреля
+2026 года. Автор — Максим Поципух, заместитель директора по развитию бизнеса
+ГК «Лаборатория Наносемантика». <a href="https://nanosemantics.ai/blog/807">Новость о выступлении</a> ·
 <a href="https://github.com/massimo-pazzi/rief-2026-talk">материалы кейса в репозитории</a>.</em></p>
 <hr />
 <h2>Предпосылки</h2>
-<p>Российский международный энергетический форум проходил 22–24 апреля 2026
-года в «Экспофоруме». Меня пригласили докладчиком на конференцию «Взгляд в
-будущее: инновационные технологии и стартапы в энергетике» с темой о том,
-как искусственный интеллект меняет взаимодействие человека с
-энергетической инфраструктурой.</p>
-<p>Задача была сложнее, чем кажется. В зале — энергетики, люди консервативной
-отрасли с многолетним опытом и столетней историей диспетчерского
-управления за спиной. Доклад о будущем легко провалить двумя способами:
-скатиться в футурологию без опоры на факты или обесценить системы, с
-которыми эти люди работают каждый день. Нужен был прогноз на 5–10 лет,
-который выдержит взгляд профессионала.</p>
-<p><strong>Моя роль.</strong> Я подготовил аналитическую записку, на которой строился
-доклад, и выступил с ним на конференции. Для записки я разобрал около 50
-материалов — от цифровизации Росатома и «Россетей» до речевых технологий — и
-оставлял только то, что прослеживается до первоисточника, с датой и
-пометкой, кто измерял: независимый исследователь, регулятор или поставщик
-решения. Главный тезис выступления: чем
-больше рутины берёт на себя ИИ, тем важнее качество интерфейса между ним и
-человеком, который принимает критические решения. Это уже вопрос
-безопасности эксплуатации, а не удобства.</p>
-<figure class="chart photo"><img src="assets/img/stage.jpg" alt="Максим Поципух выступает с докладом «Интерфейс энергетики будущего» на РМЭФ-2026" loading="lazy" width="1050" height="1400"><p class="note">Доклад на конференции «Взгляд в будущее: инновационные технологии и стартапы в энергетике», РМЭФ-2026, Санкт-Петербург, 23 апреля 2026 года. <a href="https://nanosemantics.ai/blog/807" target="_blank" rel="noopener">Новость о выступлении</a>.</p></figure>
+<p>Энергетика автоматизируется быстрее, чем когда-либо. По данным Минэнерго,
+ИИ уже применяют 58% компаний ТЭК, а к 2027 году таких будет 70%. Росатом
+ставит цель — 230 роботов на 10 тысяч сотрудников к 2030 году и рост
+производительности труда не меньше чем на 12% в год. Причина не только в
+технологиях, но и в людях: в ближайшие пять лет энергетике понадобится около
+300 тысяч специалистов, а самому Росатому до 2030 года — 337 тысяч новых
+сотрудников.</p>
+<p>Инвестиции идут в цифровые двойники, предиктивную аналитику и роботов. Но
+чем больше автоматизации, тем меньше людей остаётся на объекте и тем выше
+ответственность каждого из них. Качество взаимодействия человека с
+системой становится вопросом безопасности эксплуатации. Этому и был посвящён доклад на конференции
+«Взгляд в будущее: инновационные технологии и стартапы в энергетике» в
+рамках РМЭФ-2026.</p>
+<p>Для «Наносемантики» энергетика — уже не чужая отрасль. Диалоговые и речевые
+технологии компании работают в контакт-центрах энергосбытовых компаний: в
+одной из них внедрённая система экономит около 40 млн рублей в год, по
+данным компании. Следующий шаг — интерфейсы для генерации и сетей, и входить
+в эту тему компания решила с экспертной позицией, а не с коммерческим
+предложением.</p>
+<p><strong>Моя роль.</strong> Я подготовил аналитическую записку и презентацию и выступил с
+докладом на конференции.</p>
+<figure class="chart photo"><img src="assets/img/stage.jpg" alt="Максим Поципух выступает с докладом «Интерфейс энергетики будущего» на РМЭФ-2026" loading="lazy" width="1050" height="1400"><p class="note">Конференция «Взгляд в будущее: инновационные технологии и стартапы в энергетике», РМЭФ-2026, Санкт-Петербург, 23 апреля 2026 года. <a href="https://nanosemantics.ai/blog/807" target="_blank" rel="noopener">Новость о выступлении</a>.</p></figure>
 
 <hr />
-<h2>1. Сто лет интерфейсов</h2>
-<p>Прогноз без истории не имеет веса, поэтому записка начинается с неё.
-Российская энергетика ведёт отсчёт оперативно-диспетчерского управления с
-17 декабря 1921 года, когда в Московском районе ввели в действие первые
-документы о координации параллельной работы электростанций. За сто лет
-сменилось пять поколений интерфейса, и ни одно не заменяло человека — каждое
-расширяло его возможности.</p>
-<figure class="chart"><figcaption class="chart-title">Пять поколений интерфейса энергосистемы и шестое на горизонте: что добавило каждое</figcaption><div class="gens"><div class="gen"><div class="gen-n">0</div><div class="gen-y">до конца 1920-х</div><div class="gen-h">Присутствие</div><p>Человек у установки: стрелочные приборы, бумажный журнал, доклад голосом или телеграфом</p></div><div class="gen"><div class="gen-n">1</div><div class="gen-y">1920-е — 1950-е</div><div class="gen-h">Пространство</div><p>Телефон, частотомер и первый диспетчерский щит из фанеры с мнемосхемой: система видна целиком</p></div><div class="gen"><div class="gen-n">2</div><div class="gen-y">1960-е — 1980-е</div><div class="gen-h">Время</div><p>Мозаичные щиты, ОАСУ «Энергия» (1971), первые АСУ ТП: архив и динамика вместо моментального снимка</p></div><div class="gen"><div class="gen-n">3</div><div class="gen-y">1990-е — 2010-е</div><div class="gen-h">Гибкость</div><p>Экранный интерфейс и SCADA, видеостены: картину можно перестроить под задачу за секунды</p></div><div class="gen"><div class="gen-n">4</div><div class="gen-y">2010-е — сейчас</div><div class="gen-h">Интеллект</div><p>Предиктивная аналитика, цифровые двойники: система находит аномалии и подсказывает действия</p></div><div class="gen next"><div class="gen-n">5</div><div class="gen-y">горизонт 5–10 лет</div><div class="gen-h">Диалог</div><p>С системой разговаривают голосом и показывают ей оборудование — слой поверх всех предыдущих</p></div></div><p class="note">По материалам АО «СО ЕЭС» об истории диспетчерского управления; поколение 5 — прогноз доклада.</p></figure>
+<h2>1. Сто лет эволюции интерфейса</h2>
+<p>Российская энергетика прошла путь длиной больше ста лет — от стрелочных
+индикаторов до цифровых двойников. Отсчёт оперативно-диспетчерского
+управления ведётся с 17 декабря 1921 года. Доклад начинался с этой истории:
+каждое поколение интерфейса не заменяло человека, а расширяло его
+возможности.</p>
+<figure class="chart slide"><img src="assets/img/slide-03.jpg" alt="Слайд доклада: сто лет эволюции интерфейса" loading="lazy" width="1400" height="787"></figure>
 
-<p>Такой взгляд снимает главное опасение зала: разговор о новом поколении — это
-продолжение отраслевой практики, а не приговор существующим системам.
-Отечественные SCADA — «КАСКАД», «КРУГ-2000», MasterSCADA, СКАДА-НИИПТ — и
-системы предиктивной аналитики вроде «ПРАНЫ» и «АтомМайнда» здесь
-фундамент, а не устаревшее наследие.</p>
-<h2>2. Проверка тезиса о «последней миле»</h2>
-<p>У сторонников ИИ-интерфейсов есть популярный ход: все современные системы
-упираются в «последнюю милю» — в неспособность человека с ними работать. Я
-не стал его повторять, а проверил. Применённый огульно, он неверен и
-оскорбителен для профессионалов: подготовленный диспетчер работает с
-многоэкранным интерфейсом так же уверенно, как пилот с приборной панелью.</p>
-<p>Но там, где тезис подтверждается фактами, он верен. После аварии на АЭС
-Три-Майл-Айленд в 1979 году выяснилось, что лампа на щите показывала
-команду на закрытие клапана, а не его фактическое положение, а в первые
-минуты сработало больше сотни сигналов без всякого ранжирования. С тех пор
-интерфейс в атомной отрасли считается частью системы безопасности. Та же
-проблема живёт в промышленной автоматизации под названием «лавина
-сигналов»: по стандарту ISA-18.2 она начинается с 10 сигналов на оператора
-за 10 минут, тогда как целевой уровень в штатном режиме — около одного.
-Интерфейс сообщает, что произошло, но не помогает понять, почему.</p>
-<p>Главное же — не недостатки SCADA, а новые задачи, под которые она никогда
-не проектировалась.</p>
-<figure class="chart"><figcaption class="chart-title">Три задачи, под которые SCADA не проектировалась</figcaption><div class="cards"><div class="card"><div class="flow-h">Кадровый разрыв</div><p>Опытных диспетчеров всё меньше, подготовка нового занимает годы. SCADA показывает процесс, но не учит.</p></div><div class="card"><div class="flow-h">Работа в поле</div><p>На подстанции, на высоте, в шумном цеху нет экрана и свободных рук — только бумажный чек-лист и рация.</p></div><div class="card"><div class="flow-h">Смысловая связка систем</div><p>API связывают платформы технически, но соединить сигнал аналитики со складом запчастей и графиком ремонтов по-прежнему приходится человеку.</p></div></div></figure>
+<p>Каждый период добавлял что-то принципиально новое. Аналоговый щит с
+мнемосхемой впервые дал <strong>пространство</strong> — систему целиком на одной
+плоскости. Централизация измерений и первые SCADA дали <strong>динамику</strong> —
+не только текущее состояние, но и хронологию событий. Экранный интерфейс
+дал <strong>гибкость</strong> — перестраивается картинка, а не стенд.</p>
+<figure class="chart slide"><img src="assets/img/slide-04.jpg" alt="Слайд доклада: поколения интерфейса 1–3" loading="lazy" width="1400" height="787"></figure>
 
-<p>Отсюда корректная формулировка, на которой держится весь доклад:
-современные системы хорошо решают свои задачи, а пространство для нового
-поколения интерфейсов возникает не в замене, а в дополнении.</p>
-<h2>3. Человек как проектное задание</h2>
-<p>Если спросить, каким будет интерфейс через десять лет, полезно задать другой
-вопрос: каким интерфейсом человек пользуется сотни тысяч лет, общаясь с
-другим человеком? Не графиком и не формой ввода, а речью, интонацией,
-жестом, взглядом и контекстом.</p>
-<p>Цифры здесь нужно брать осторожно. Популярная формула Меграбяна «7% слова,
-38% интонация, 55% мимика» получена в двух экспериментах 1967 года на
-нескольких десятках студентов и, по словам самого автора, применима только
-к сообщениям о чувствах и установках. Даже если отбросить проценты,
-человеческое общение мультимодально по своей природе.</p>
-<p>Сто лет человек учился говорить на языке машины: читать мнемосхемы,
-запоминать коды сигналов, переключаться между экранами. Языковые модели,
-распознавание и синтез речи, компьютерное зрение впервые позволяют машине
-говорить на языке человека. Мы не учим машину быть человеком — мы перестаём
-учить человека быть машиной.</p>
-<figure class="chart"><figcaption class="chart-title">Мультимодальный интерфейс на объекте энергетики: пять каналов</figcaption><div class="cards cards5"><div class="card"><div class="flow-h">Голос</div><p>Основной канал запроса: «Покажи состояние турбины № 4 за последние 6 часов».</p></div><div class="card"><div class="flow-h">Слух</div><p>Ответ звучит в гарнитуре во время обхода, когда руки заняты, а глаза смотрят на оборудование.</p></div><div class="card"><div class="flow-h">Зрение</div><p>Камера смартфона или AR-очков узнаёт агрегат и накладывает историю и прогноз.</p></div><div class="card"><div class="flow-h">Контекст</div><p>Система знает роль спрашивающего и место, откуда задан вопрос.</p></div><div class="card"><div class="flow-h">Диалог</div><p>Не команды, а разговор: «А что там было в августе?» понимается в контексте прошлого вопроса.</p></div></div></figure>
+<h2>2. Четвёртое поколение: цифровая эра и ИИ-слой</h2>
+<p>С приходом предиктивной аналитики, цифровых двойников и систем поддержки
+решений картина изменилась. Впервые за сто лет интерфейс перестаёт быть
+пассивным окном и становится участником разговора — тем, кто что-то знает и
+хочет это сообщить. Система уже не только фиксирует, но и предупреждает.</p>
+<figure class="chart slide"><img src="assets/img/slide-05.jpg" alt="Слайд доклада: четвёртое поколение — цифровая эра и переход к ИИ-слою" loading="lazy" width="1400" height="787"></figure>
 
-<h2>4. Пятое поколение и четыре сценария</h2>
-<p>Пятое поколение — диалоговый мультимодальный интерфейс, который ложится
-слоем поверх SCADA, предиктивной аналитики и цифровых двойников, не заменяя
-их. Это не футурология: каждый сценарий опирается на то, что уже работает в
-промышленных пилотах.</p>
-<p>Рынок к этому готов. По данным Минэнерго, доля компаний ТЭК, которые
-применяют ИИ, выросла вдвое за три года, а к 2027 году должна дойти до 70%.
-Это данные ведомства в изложении СМИ, методика подсчёта не раскрыта.</p>
-<figure class="chart"><figcaption class="chart-title">Доля компаний ТЭК, которые применяют ИИ</figcaption><div class="ranges"><div class="rg"><div class="rg-l">2021</div><div class="rg-bar"><div class="rg-lo" style="width:29%; border-radius:3px"></div><span>29%</span></div></div><div class="rg"><div class="rg-l">2024</div><div class="rg-bar"><div class="rg-lo" style="width:58%; border-radius:3px"></div><span>58%</span></div></div><div class="rg"><div class="rg-l">2027 — прогноз</div><div class="rg-bar"><div class="rg-lo fc" style="width:70%; border-radius:3px"></div><span>70%</span></div></div></div><p class="note">Минэнерго России в изложении «<a href="https://www.kommersant.ru/doc/8161430" target="_blank" rel="noopener">Коммерсанта</a>» (30.10.2025) и <a href="https://ria.ru/20250422/predprijatija-2012798075.html" target="_blank" rel="noopener">РИА Новости</a> (22.04.2025); методика не раскрыта.</p></figure>
+<h2>3. Природа человека как проектное задание</h2>
+<p>Какой интерфейс человек использует тысячи лет? Речь, интонацию, мимику,
+жесты, контекст и паузы. Это наш «родной интерфейс». По оценке антрополога
+Рэя Бёрдвистелла, невербальные каналы несут больше половины информации в
+живом общении. Даже если не спорить о процентах, человеческое общение
+мультимодально по своей природе — и интерфейс, который этого не учитывает,
+заставляет человека подстраиваться под машину.</p>
+<figure class="chart"><div class="callout"><p>Мы общаемся через <strong>речь, интонацию, мимику, жесты, контекст и паузы</strong>. Это и есть наш «родной интерфейс».</p><p>По оценке Рэя Бёрдвистелла, невербальные каналы несут <strong>65–70% информации</strong> в живом общении. Это оценка, а не измерение, но вывод от процентов не зависит: человеческое общение мультимодально по своей природе.</p></div></figure>
 
-<p>Отдельно важна зрелость голоса. В 2024–2025 годах голосовые модели вышли на
-задержку около 200 миллисекунд — это уровень обычной паузы между репликами
-в разговоре. Mistral выпустил модель понимания речи Voxtral, OpenAI —
-голосовой gpt-realtime с подключением к телефонии. Технология вышла из
-стадии эксперимента.</p>
-<figure class="chart"><figcaption class="chart-title">Четыре сценария пятого поколения и что их подтверждает уже сегодня</figcaption><div class="table-wrap"><table class=""><thead><tr><th>Сценарий</th><th>Что делает</th><th>Подтверждения</th><th>Зрелость</th></tr></thead><tbody><tr><td><strong>Диалоговая надстройка в диспетчерской</strong></td><td>«Покажи объекты с аномалиями за сутки и отсортируй по приоритету» — поверх SCADA, аналитики и учёта</td><td>Siemens Industrial Copilot: больше 100 промышленных клиентов к октябрю 2024 года, голосовой режим в Simatic eaSie. Росатом: система поддержки оператора на блоке № 6 Нововоронежской АЭС в опытной эксплуатации с июля 2025 года — 360 систем, прогноз на 30 минут</td><td>пилоты</td></tr><tr><td><strong>Ассистент полевого инженера</strong></td><td>Узнаёт оборудование через камеру, ведёт по шагам, принимает голосовой отчёт</td><td>СИБУР в 2021 году сообщал об AR-консультантах на предприятиях клиентов. Boeing — до 25% экономии времени на сборке жгутов с AR, по данным поставщика решения</td><td>пилоты</td></tr><tr><td><strong>Цифровой наставник</strong></td><td>Обучение и аттестация нового персонала на оборудовании конкретной станции</td><td>«Газпром нефть шельф» — VR-тренажёр для обучения (2023); BIOCAD — AR-приложение для обучения работе с лиофильной сушилкой</td><td>пилоты</td></tr><tr><td><strong>Контакт-центр энергосбыта</strong></td><td>Голосовой ассистент принимает показания, консультирует по тарифам и платежам</td><td>Голосовые роботы в контакт-центрах уже работают. «Наносемантика» внедрила диалоговые системы в энергосбытовых компаниях; в одной из них экономия на контакт-центре — около 40 млн ₽ в год, по данным компании</td><td>работает</td></tr></tbody></table></div></figure>
+<h2>4. Мультимодальный интерфейс на объекте энергетики</h2>
+<p>Что это значит для энергетики? Голос становится каналом оперативного
+запроса, слух — каналом получения ответа, компьютерное зрение узнаёт
+оборудование, а система учитывает, кто спрашивает и откуда.</p>
+<figure class="chart slide"><img src="assets/img/slide-07.jpg" alt="Слайд доклада: мультимодальный интерфейс на объекте энергетики" loading="lazy" width="1400" height="787"></figure>
 
-<p>На горизонте 7–10 лет следующая ступень — системы из нескольких ИИ-агентов,
-которые взаимодействуют между собой: агент предиктивной аналитики сообщает
-агенту планирования ремонтов, тот готовит заявку на запчасти и предлагает
-диспетчеру план работ. По прогнозу Deloitte, в 2025 году агентов
-пилотирует четверть компаний, использующих генеративный ИИ, а к 2027 году —
-половина.</p>
-<h2>5. Барьеры</h2>
-<p>Без разговора о сложностях доклад был бы красивой картинкой. Часть
-барьеров не решается технически — только нормативно, организационно и
-инвестиционно. Поэтому каждый барьер в записке заканчивается практическим
-выводом, а не констатацией проблемы.</p>
-<figure class="chart"><figcaption class="chart-title">Семь барьеров и практический вывод по каждому</figcaption><div class="table-wrap"><table class=""><thead><tr><th>Барьер</th><th>В чём сложность</th><th>Вывод</th></tr></thead><tbody><tr><td>Кибербезопасность КИИ</td><td>187-ФЗ, приказы ФСТЭК № 31 и № 239, постановление № 127. В 2025 году — больше 400 дел о нарушении категорирования. Голос можно подделать, команду — внедрить через запрос</td><td>Контур «информирование и рекомендации», а не «управление»; подтверждение оператором, журнал каждого запроса, сегментация сетей, однонаправленные шлюзы</td></tr><tr><td>Галлюцинации моделей</td><td>В апреле 2025 года OpenAI сообщила, что o3 ошибается в 33% вопросов теста PersonQA — вдвое чаще o1. Полностью устранить галлюцинации нельзя</td><td>Модель — интерпретатор доверенных данных (RAG), а не источник истины; ссылка на источник в каждом ответе</td></tr><tr><td>Отраслевые данные</td><td>Общие модели плохо знают терминологию, маркировки и аббревиатуры энергетики</td><td>Дообучение на данных заказчика, терминологические базы, проверка распознавания речи в шуме</td></tr><tr><td>Технологический суверенитет</td><td>Siemens и ABB ушли, Schneider Electric продала бизнес, GE свернула деятельность; на значимых объектах КИИ иностранное ПО запрещено с 2025 года</td><td>Развёртывание в контуре заказчика — норма, а не опция</td></tr><tr><td>Кадры и культура</td><td>Для части персонала ИИ-ассистент непривычен; молодые сотрудники ждут голосовых помощников, как дома</td><td>Проект управления изменениями: пилотные группы с опытными диспетчерами, прозрачность, от информирования к рекомендациям</td></tr><tr><td>Регулирование</td><td>Отраслевых стандартов нет; приказ ФСТЭК № 117 с 1 марта 2026 года впервые задал требования к ИИ, но для государственных систем; законопроект о сертификации ИИ высокого риска — в работе</td><td>Опережающее внедрение: первые получают опыт и влияют на стандарты</td></tr><tr><td>Экономика</td><td>Эффект комплексный: время операций, ошибки, скорость обучения. Методик оценки нет</td><td>Обоснование через стратегическую готовность отрасли, а не ROI одного проекта</td></tr></tbody></table></div></figure>
+<h2>5. В чём бизнес-ценность</h2>
+<p>Почему инвестиции в естественный диалоговый интерфейс между человеком и
+машиной не менее важны, чем инвестиции в цифровые двойники? Потому что
+двойник знает, что происходит, но решение по-прежнему принимает человек.</p>
+<figure class="chart"><div class="callout"><p><strong>Ключевой аргумент:</strong> чем больше объём автоматизации, тем выше концентрация ответственности у оставшихся людей — и тем критичнее качество их взаимодействия с системой.</p></div></figure>
 
-<p>Главный из выводов: в энергетике ИИ-интерфейс должен работать в контуре
-«информирование и рекомендации», а не «прямое управление». Любое действие,
-влияющее на технологический процесс, подтверждает оператор.</p>
-<h2>6. Почему у России есть фундамент</h2>
-<p>Доклад заканчивался на сильной ноте, но без пустого пафоса — с пятью
-основаниями:</p>
-<ol>
-<li><strong>Столетие диспетчерской школы.</strong> Централизованное
-   оперативно-диспетчерское управление в стране ведёт отсчёт с 1921 года, и
-   интерфейсы следующего поколения вырастают из этой практики.</li>
-<li><strong>Свой технологический стек.</strong> Есть отечественные решения во всех
-   слоях ИИ-интерфейса: диалоговые платформы, в том числе DialogOS
-   «Наносемантики», речевые технологии NLab Speech в реестре российского ПО,
-   нейросетевые библиотеки, работающие на «Эльбрусе», собственные SCADA и
-   системы предиктивной аналитики.</li>
-<li><strong>Окно в регулировании.</strong> Европейский AI Act уже относит ИИ в
-   энергоснабжении к системам высокого риска, но требования начнут
-   применяться только в ближайшие годы. Отраслевых стандартов для
-   генеративного ИИ на значимых объектах КИИ в России пока нет — правила
-   формируются сейчас, и в этом можно участвовать.</li>
-<li><strong>Спрос и государственная стратегия.</strong> Национальная стратегия
-   развития ИИ ставит цель — 11,2 трлн рублей прироста ВВП к 2030 году, а
-   уход западных вендоров создал спрос на отечественные решения.</li>
-<li><strong>Человек в центре.</strong> Российская диспетчерская школа построена на
-   уважении к компетенции человека, который принимает последнее решение.
-   Поэтому разговор об интерфейсе будущего — не о замене человека, а о
-   возвращении ему естественного языка.</li>
-</ol>
-<h2>7. Как построен доклад</h2>
-<p>Записка — основа, а доклад — 20 минут для зала, который не обязан
-соглашаться. Порядок блоков выстроен так, чтобы доверие появлялось раньше,
-чем прогноз: сначала история, которую зал знает и уважает, потом честная
-проверка популярного тезиса и только затем образ будущего.</p>
-<figure class="chart"><figcaption class="chart-title">Структура доклада: 20 минут</figcaption><ol class="talk"><li><span class="tk-m">0–2 мин</span><span class="tk-h">Вступление</span><span class="tk-t">Диспетчер 1921 года с телефоном и диспетчер 2026 года с видеостеной. Что будет через 10 лет?</span></li><li><span class="tk-m">2–6 мин</span><span class="tk-h">История</span><span class="tk-t">Пять поколений: каждое расширяло возможности человека, а не заменяло его</span></li><li><span class="tk-m">6–9 мин</span><span class="tk-h">«Последняя миля» — честно</span><span class="tk-t">Не «SCADA устарела», а «появились новые задачи»</span></li><li><span class="tk-m">9–12 мин</span><span class="tk-h">Природа человека</span><span class="tk-t">Интерфейс будущего не изобретается, а возвращается к естественной форме</span></li><li><span class="tk-m">12–16 мин</span><span class="tk-h">Образ будущего</span><span class="tk-t">Пятое поколение и четыре сценария с подтверждениями сегодняшнего дня</span></li><li><span class="tk-m">16–19 мин</span><span class="tk-h">Барьеры</span><span class="tk-t">Каждый — с практическим выводом</span></li><li><span class="tk-m">19–20 мин</span><span class="tk-h">Финал</span><span class="tk-t">Почему у России есть основания и возврат к образу диспетчера</span></li></ol></figure>
+<h2>6. Технологии понимания речи 2026 года</h2>
+<p>Ещё недавно голосовой интерфейс в промышленности упирался в задержку.
+Классическая цепочка — распознать речь, понять смысл, сгенерировать ответ,
+озвучить его — даёт паузу почти в секунду и больше, и разговор с системой
+ощущается как разговор с автоответчиком. Аудио-нативные модели
+обрабатывают речь по мере поступления звука и начинают формировать ответ ещё
+до конца фразы — так же, как это делает человек.</p>
+<figure class="chart"><figcaption class="chart-title">Задержка до первого звука ответа</figcaption><div class="table-wrap"><table class="num txtlast"><thead><tr><th></th><th>Задержка</th><th>Что это значит</th></tr></thead><tbody><tr><td>Классическая цепочка: распознать → понять → сгенерировать → озвучить</td><td>800–2000+ мс</td><td>Заметная, некомфортная пауза до первого звука ответа</td></tr><tr><td>Аудио-нативные модели</td><td>40–250 мс</td><td>Ответ формируется по ходу фразы, намерение понимается по первым 300–500 мс речи</td></tr><tr><td>Комфортный порог паузы в естественном разговоре</td><td>менее 500 мс</td><td>Средняя пауза между репликами у людей — около 200 мс</td></tr></tbody></table></div><p class="note">По слайду доклада; ориентиры — отраслевые обзоры голосовых моделей 2025–2026 годов (<a href="https://inworld.ai/resources/best-speech-to-speech-apis" target="_blank" rel="noopener">Inworld, март 2026</a>) и <a href="https://www.pnas.org/doi/10.1073/pnas.0903616106" target="_blank" rel="noopener">Stivers et al., PNAS, 2009</a> о паузах между репликами.</p></figure>
 
-<p>Финал возвращает к началу. Сто лет назад диспетчер слушал телефон и
-отмечал изменения на мнемосхеме. Через десять лет он снова будет слушать и
-говорить — только собеседник будет другим.</p>
-<h2>8. Результат</h2>
+<h2>7. Контуры интерфейса пятого поколения</h2>
+<p>Пятое поколение — управляемая полуавтономия. Человек становится
+супервайзером сложной автоматизированной системы, а работа делится между
+тремя контурами: цифровой двойник знает, что происходит и что будет
+происходить, мультиагентная система берёт на себя рутину в рамках заданных
+полномочий, а диалоговый интерфейс даёт ответственному человеку
+возможность понять, проверить, вмешаться и одобрить решения, которые
+рекомендует ИИ.</p>
+<figure class="chart slide"><img src="assets/img/slide-11.jpg" alt="Слайд доклада: контуры интерфейса пятого поколения" loading="lazy" width="1400" height="787"></figure>
+
+<h2>8. Вызовы и барьеры</h2>
+<p>Энергетика — критическая информационная инфраструктура, и голосовые и
+мультимодальные ИИ-ассистенты резко увеличивают поверхность атаки. Главные
+барьеры — кибербезопасность объектов КИИ, галлюцинации моделей, качество и
+доступность данных, регуляторные требования и интеграция со старой
+инфраструктурой. Отсюда главный практический вывод: в энергетике
+ИИ-интерфейс работает в контуре «информирование и рекомендации», а не
+«прямое управление», и любое действие, влияющее на технологический процесс,
+подтверждает человек.</p>
+<figure class="chart slide"><img src="assets/img/slide-12.jpg" alt="Слайд доклада: вызовы и барьеры" loading="lazy" width="1400" height="787"></figure>
+
+<h2>9. Заключение</h2>
+<p>Всю историю взаимодействия с машиной мы адаптировались к ней: учились читать
+мнемосхемы, изучать языки программирования, набирать команды. Это
+требовало многолетней тренировки, потому что машина не умела общаться так,
+как общается человек. Сегодня эта логика впервые меняется: мы учим машину
+говорить на языке человека, а не наоборот.</p>
+<figure class="chart slide"><img src="assets/img/slide-13.jpg" alt="Слайд доклада: заключение" loading="lazy" width="1400" height="787"></figure>
+
+<h2>Результат</h2>
 <p>Доклад прозвучал на РМЭФ-2026 23 апреля в рамках конференции «Взгляд в
 будущее: инновационные технологии и стартапы в энергетике».
 <a href="https://nanosemantics.ai/blog/807">Новость о выступлении</a> опубликована на
@@ -282,7 +245,7 @@ th{font-weight:600; color:var(--ink-2); font-size:12.5px;}
 <hr />
 <style>.oc-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin:12px 0 8px;}.oc-tile{display:flex; flex-direction:column; gap:6px; padding:14px 16px; background:var(--surface); border:1px solid var(--rule); border-radius:6px; text-decoration:none; color:inherit;} .oc-tile:hover{border-color:var(--accent);}.oc-tag{font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--accent);}.oc-title{font-weight:600; font-size:15px; line-height:1.35;} .oc-go{margin-top:auto; font-size:13px; color:var(--accent);}</style><h2>Другие кейсы автора</h2><div class="oc-grid"><a class="oc-tile" href="https://massimo-pazzi.github.io/hotel-market-case/"><span class="oc-tag">Анализ рынка</span><span class="oc-title">Рост цен в отелях Петербурга перестал окупаться</span><span class="oc-go">Открыть кейс →</span></a><a class="oc-tile" href="https://massimo-pazzi.github.io/housing-digital-twin-case/"><span class="oc-tag">Новый продукт</span><span class="oc-title">Цифровой двойник жилого фонда Москвы: от аварийного ремонта к прогнозу поломок</span><span class="oc-go">Открыть кейс →</span></a><a class="oc-tile" href="https://massimo-pazzi.github.io/b2b-value-case/"><span class="oc-tag">Обоснование проекта</span><span class="oc-title">Как доказать окупаемость ИИ-проекта, не зная маржи заказчика</span><span class="oc-go">Открыть кейс →</span></a><a class="oc-tile" href="https://massimo-pazzi.github.io/fastfood-assistant-case/"><span class="oc-tag">Продукт с ИИ</span><span class="oc-title">ИИ-ассистент для федеральной сети быстрого питания: как спроектировать продукт не имея данных заказчика</span><span class="oc-go">Открыть кейс →</span></a></div>
 <h2>Источники</h2>
-<ol class="sources"><li><a href="https://www.so-ups.ru/about/history/1921-2002/" target="_blank" rel="noopener">АО «СО ЕЭС»: история оперативно-диспетчерского управления</a></li><li><a href="https://www.so-ups.ru/news/smi/press-view/news/1517/" target="_blank" rel="noopener">АО «СО ЕЭС»: как менялись диспетчерские щиты</a></li><li><a href="https://isup.ru/articles/2/424/" target="_blank" rel="noopener">НИИПТ: АСУ ТП Выборгской преобразовательной подстанции</a></li><li><a href="https://www.kommersant.ru/doc/8161430" target="_blank" rel="noopener">«Коммерсантъ»: ИИ в энергетике, данные Минэнерго</a></li><li><a href="https://ria.ru/20250422/predprijatija-2012798075.html" target="_blank" rel="noopener">РИА Новости: Минэнерго о применении ИИ в ТЭК</a></li><li><a href="http://www.pddoc.com/tmi2/kemeny/wednesday_march_28_1979.htm" target="_blank" rel="noopener">Отчёт комиссии Кемени об аварии на Три-Майл-Айленд</a></li><li><a href="https://www.digitalrefining.com/article/1000558/alarm-floods-and-plant-incidents" target="_blank" rel="noopener">Alarm floods and plant incidents (ISA-18.2)</a></li><li><a href="https://news.microsoft.com/source/2024/10/24/siemens-and-microsoft-scale-industrial-ai/" target="_blank" rel="noopener">Microsoft и Siemens: Industrial Copilot</a></li><li><a href="https://press.siemens.com/global/en/pressrelease/siemens-introduces-ai-agents-industrial-automation" target="_blank" rel="noopener">Siemens: ИИ-агенты и голосовой режим</a></li><li><a href="https://rg.ru/2025/07/04/reg-cfo/na-novovoronezhskoj-aes-zarabotal-unikalnyj-cifrovoj-pomoshchnik-operatora.html" target="_blank" rel="noopener">«Российская газета»: цифровой помощник оператора на Нововоронежской АЭС</a></li><li><a href="https://arxiv.org/abs/2410.00037" target="_blank" rel="noopener">Kyutai Moshi: задержка голосовой модели</a></li><li><a href="https://mistral.ai/news/voxtral" target="_blank" rel="noopener">Mistral: Voxtral</a></li><li><a href="https://openai.com/index/introducing-gpt-realtime/" target="_blank" rel="noopener">OpenAI: gpt-realtime</a></li><li><a href="https://www.deloitte.com/us/en/insights/industry/technology/technology-media-and-telecom-predictions/2025/autonomous-generative-ai-agents-still-under-development.html" target="_blank" rel="noopener">Deloitte TMT Predictions 2025: ИИ-агенты</a></li><li><a href="https://techcrunch.com/2025/04/18/openais-new-reasoning-ai-models-hallucinate-more/" target="_blank" rel="noopener">TechCrunch: галлюцинации o3 и o4-mini</a></li><li><a href="https://arxiv.org/abs/2401.11817" target="_blank" rel="noopener">Xu и др. (2024): неизбежность галлюцинаций</a></li><li><a href="https://www.kaaj.com/psych/smorder.html" target="_blank" rel="noopener">Меграбян о границах своей формулы</a></li><li><a href="https://cisoclub.ru/fstjek-priznala-ujazvimost-bolshinstva-obektov-kriticheskoj-infrastruktury-i-gotovitsja-uzhestochit-kontrol" target="_blank" rel="noopener">ФСТЭК о проверках КИИ в 2025–2026 годах</a></li><li><a href="https://www.anti-malware.ru/analytics/Technology_Analysis/FSTEC-Order-No-117" target="_blank" rel="noopener">Приказ ФСТЭК № 117: требования к ИИ</a></li><li><a href="https://base.garant.ru/403784114/" target="_blank" rel="noopener">Указ № 166 об отечественном ПО на значимых объектах КИИ</a></li><li><a href="https://www.bakerbotts.com/thought-leadership/publications/2026/may/ai-regulatory-update-for-energy-new-timelines-in-the-eu-new-standards-in-the-us" target="_blank" rel="noopener">Европейский AI Act: ИИ в энергетике — высокий риск</a></li><li><a href="https://www.kommersant.ru/doc/7267191" target="_blank" rel="noopener">«Коммерсантъ»: цель Национальной стратегии развития ИИ — 11,2 трлн рублей</a></li><li><a href="https://www.cnews.ru/news/line/2020-07-10_sibur_zapustil_arservis" target="_blank" rel="noopener">СИБУР: AR-консультанты (CNews, 2020)</a></li><li><a href="https://arinsider.co/2021/08/24/case-study-boeing-cuts-production-time-with-ar/" target="_blank" rel="noopener">Boeing и Upskill: AR в сборке жгутов</a></li><li><a href="https://nanosemantics.ai/blog/807" target="_blank" rel="noopener">«Наносемантика» на РМЭФ-2026</a></li></ol><p class="note">Аналитическая записка к докладу не публикуется целиком; факты из неё сверены с источниками выше, цифры приведены по первоисточникам.</p>
+<ol class="sources"><li><a href="https://ria.ru/20250422/predprijatija-2012798075.html" target="_blank" rel="noopener">Минэнерго о доле компаний ТЭК, применяющих ИИ (РИА Новости, 22.04.2025)</a></li><li><a href="https://www.kommersant.ru/doc/8161430" target="_blank" rel="noopener">«Коммерсантъ»: ИИ в энергетике, 30.10.2025</a></li><li><a href="https://www.kommersant.ru/doc/8294072" target="_blank" rel="noopener">«Коммерсантъ»: в условиях дефицита кадров, 22.12.2025</a></li><li><a href="https://strana-rosatom.ru/2025/12/23/k-2030-godu-v-rosatome-budet-230-robotov-na-10/" target="_blank" rel="noopener">«Страна Росатом»: к 2030 году в Росатоме будет 230 роботов на 10 тысяч сотрудников, 23.12.2025</a></li><li><a href="https://www.so-ups.ru/about/history/1921-2002/" target="_blank" rel="noopener">АО «СО ЕЭС»: история оперативно-диспетчерского управления</a></li><li><a href="https://www.so-ups.ru/news/smi/press-view/news/1517/" target="_blank" rel="noopener">АО «СО ЕЭС»: как менялись диспетчерские щиты</a></li><li><a href="https://en.wikipedia.org/wiki/Ray_Birdwhistell" target="_blank" rel="noopener">Рэй Бёрдвистелл и оценка доли невербальной информации</a></li><li><a href="https://inworld.ai/resources/best-speech-to-speech-apis" target="_blank" rel="noopener">Inworld: обзор голосовых моделей, март 2026</a></li><li><a href="https://www.pnas.org/doi/10.1073/pnas.0903616106" target="_blank" rel="noopener">Stivers et al. (2009): паузы между репликами в разговоре</a></li><li><a href="https://arxiv.org/abs/2410.00037" target="_blank" rel="noopener">Kyutai Moshi: аудио-нативная голосовая модель</a></li><li><a href="https://cisoclub.ru/fstjek-priznala-ujazvimost-bolshinstva-obektov-kriticheskoj-infrastruktury-i-gotovitsja-uzhestochit-kontrol" target="_blank" rel="noopener">ФСТЭК о проверках объектов КИИ в 2025–2026 годах</a></li><li><a href="https://nanosemantics.ai/blog/807" target="_blank" rel="noopener">«Наносемантика» на РМЭФ-2026</a></li></ol><p class="note">Слайды — из презентации доклада. Цифры, которых нет на слайдах, сверены с первоисточниками.</p>
 </main>
 </body>
 </html>
